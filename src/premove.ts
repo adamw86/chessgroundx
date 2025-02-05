@@ -183,6 +183,16 @@ const sideways: Mobility = (x1, y1, x2, y2) => {
   return y1 === y2 && diff(x1, x2) <= 1;
 }
 
+//---Chess² Royal Pieces---//
+// Templar (knight + bishop + wazir(king))
+const templar: Mobility = (x1, y1, x2, y2) => {
+  return bishop(x1, y1, x2, y2) || knight(x1, y1, x2, y2) || wazir(x1, y1, x2, y2);
+};
+
+
+//---Chess² Other Pieces---//
+
+
 // wazir
 const wazir: Mobility = (x1, y1, x2, y2) => {
   const xd = diff(x1, x2);
@@ -1322,6 +1332,32 @@ function builtinMobility(
             return noMove;
         }
       };
+
+      case 'chess2':
+        return (boardState, key, canCastle) => {
+          const piece = boardState.pieces.get(key)!;
+          const role = piece.role;
+          const color = piece.color;
+          switch (role) {
+            case 'p-piece': // pawn
+              return pawn(color);
+            case 'r-piece': // rook
+              return rook;
+            case 'n-piece': // knight
+              return knight;
+            case 'b-piece': // bishop
+              return bishop;
+            case 'q-piece': // queen
+              return queen;
+            case 't-piece': // templar
+              return templar;
+            case 'k-piece': // king
+              return  king(color, rookFilesOf(boardState.pieces, color), canCastle);
+            default:
+              return noMove;
+          }
+        };
+  
 
     case 'capablanca':
     case 'capahouse':
