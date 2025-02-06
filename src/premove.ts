@@ -183,16 +183,6 @@ const sideways: Mobility = (x1, y1, x2, y2) => {
   return y1 === y2 && diff(x1, x2) <= 1;
 }
 
-//---Chess² Royal Pieces---//
-// Templar (knight + bishop + wazir(king))
-const templar: Mobility = (x1, y1, x2, y2) => {
-  return bishop(x1, y1, x2, y2) || knight(x1, y1, x2, y2) || wazir(x1, y1, x2, y2);
-};
-
-
-//---Chess² Other Pieces---//
-
-
 // wazir
 const wazir: Mobility = (x1, y1, x2, y2) => {
   const xd = diff(x1, x2);
@@ -618,6 +608,18 @@ function kingChennis(color: cg.Color): Mobility {
   return (x1, y1, x2, y2) =>
     kingNoCastling(x1, y1, x2, y2) && x2 >= 1 && x2 <= 5 && (color === 'white' ? y2 <= 3 : y2 >= 3);
 }
+
+//---Chess² Royal Pieces---//
+// Templar (knight + bishop + wazir(king))
+export const templar: Mobility = (x1, y1, x2, y2) => {
+  return bishop(x1, y1, x2, y2) || knight(x1, y1, x2, y2) || wazir(x1, y1, x2, y2);
+};
+
+//---Chess² Other Pieces---//
+
+
+
+
 
 // cannot premove
 const noMove = () => false;
@@ -1413,6 +1415,8 @@ function builtinMobility(
           case 'a-piece': // archbishop
           case 'd-piece': // Dragon chess dragon
             return archbishop;
+          case 't-piece': // Chess² Templar
+            return templar;
           case 'k-piece': // king
             return chess960
               ? king960(color, rookFilesOf(boardState.pieces, color), canCastle)
