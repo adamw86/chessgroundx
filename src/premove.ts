@@ -615,6 +615,15 @@ export const templar: Mobility = (x1, y1, x2, y2) => {
   return bishop(x1, y1, x2, y2) || knight(x1, y1, x2, y2) || wazir(x1, y1, x2, y2);
 };
 
+export const dragon: Mobility = (x1, y1, x2, y2) => {
+  return rook(x1, y1, x2, y2) || wazir(x1, y1, x2, y2);
+};
+
+export const valkyrie: Mobility = (x1, y1, x2, y2) => {
+  return wazirDabbaba(x1, y1, x2, y2) || (fersAlfil(x1, y1, x2, y2) && (y2 >= y1));
+};
+
+
 //---Chess² Other Pieces---//
 
 
@@ -1353,6 +1362,10 @@ function builtinMobility(
               return queen;
             case 't-piece': // templar
               return templar;
+              case 'd-piece': // dragon
+              return dragon;
+              case 'v-piece': // valkyrie
+              return valkyrie;
             case 'k-piece': // king
               return  king(color, rookFilesOf(boardState.pieces, color), canCastle);
             default:
